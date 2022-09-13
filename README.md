@@ -1,7 +1,7 @@
 # Revisiting Discrete Soft Actor-Critic
-This repository is the implementation of Revisiting Discrete Soft Actor-Critic, and is based on the open-source [tianshou](https://github.com/thu-ml/tianshou) codebase.
+This repository is the implementation of our optimized soft actor-critic algorithm for discrete action spaces, and it is based on the open-source [tianshou](https://github.com/thu-ml/tianshou) codebase.
 
-## Requirement
+## Requirements
 - python: 3.6+
 - gym>=0.23.1
 - torch>=1.4.0
@@ -10,7 +10,7 @@ This repository is the implementation of Revisiting Discrete Soft Actor-Critic, 
 - atari_py
 - tqdm
 
-## doc
+## Doc
 ```
 .
 ├── README.md
@@ -28,7 +28,7 @@ This repository is the implementation of Revisiting Discrete Soft Actor-Critic, 
 ```
 
 
-## Useage
+## Usage
 
 1. run base discrete SAC for Pong  10m steps
 ```
