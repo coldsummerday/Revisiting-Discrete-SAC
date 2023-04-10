@@ -20,6 +20,7 @@ class RegularizedActor(Actor):
         logits, hidden = self.preprocess(obs, state)
         logits = self.last(logits)
 
+
         numerator_t = -np.log(0.01) - np.log(self.output_dim)
         denominator_t = (
             torch.max(logits, dim=1, keepdim=True)[0] -\

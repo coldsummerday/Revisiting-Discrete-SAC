@@ -1,5 +1,4 @@
 ale_py==0.7.5
-envpool==0.6.3.post1
 gym==0.26.0
 h5py==3.7.0
 numba==0.56.0
