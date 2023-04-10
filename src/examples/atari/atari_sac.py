@@ -12,8 +12,8 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(__dir__, "../"))
 
 
-from atari_network import DQN
-from atari_wrapper import make_atari_env
+from .atari_network import DQN
+from .atari_wrapper import make_atari_env
 from torch.utils.tensorboard import SummaryWriter
 
 
