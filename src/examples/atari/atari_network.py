@@ -4,6 +4,35 @@ import numpy as np
 import torch
 from torch import nn
 
+import torch.nn.functional as F
+from tianshou.utils.net.discrete import Actor
+
+
+class RegularizedActor(Actor):
+
+    def forward(
+        self,
+        obs: Union[np.ndarray, torch.Tensor],
+        state: Any = None,
+        info: Dict[str, Any] = {},
+    ) -> Tuple[torch.Tensor, Any]:
+        r"""Mapping: s -> Q(s, \*)."""
+        logits, hidden = self.preprocess(obs, state)
+        logits = self.last(logits)
+
+        numerator_t = -np.log(0.01) - np.log(self.output_dim)
+        denominator_t = (
+            torch.max(logits, dim=1, keepdim=True)[0] -\
+            torch.min(logits, dim=1, keepdim=True)[0] + 1e-8
+        )
+        t = numerator_t / denominator_t
+        t = torch.clip(t, min=0, max=1)
+
+        logits = logits * t 
+
+        if self.softmax_output:
+            logits = F.softmax(logits, dim=-1)
+        return logits, hidden
 
 class DQN(nn.Module):
     """Reference: Human-level control through deep reinforcement learning.

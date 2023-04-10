@@ -12,10 +12,9 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(__dir__, "../"))
 
 
-from .atari_network import DQN
+from .atari_network import DQN, RegularizedActor
 from .atari_wrapper import make_atari_env
 from torch.utils.tensorboard import SummaryWriter
-
 
 
 
@@ -106,6 +105,7 @@ def get_args():
     parser.add_argument('--clip-q', action="store_true", default=False)
     parser.add_argument("--clip-q-epsilon", type=float, default=0.5)
     parser.add_argument("--entropy-penalty", action="store_true", default=False)
+    parser.add_argument("--regularized-softmax", action="store_true", default=False)
 
     parser.add_argument('--entropy-penalty-beta',type=float,default=0.5)
 
@@ -146,7 +146,13 @@ def test_discrete_sac(args=get_args()):
         features_only=True,
         output_dim=args.hidden_size
     )
-    actor = Actor(net, args.action_shape, device=args.device, softmax_output=False)
+    
+    if args.regularized_softmax:
+        actor_cls = RegularizedActor
+    else:
+        actor_cls = Actor
+    
+    actor = actor_cls(net, args.action_shape, device=args.device, softmax_output=False)
     actor_optim = torch.optim.Adam(actor.parameters(), lr=args.actor_lr)
     critic1 = Critic(net, last_size=args.action_shape, device=args.device)
     critic1_optim = torch.optim.Adam(critic1.parameters(), lr=args.critic_lr)
