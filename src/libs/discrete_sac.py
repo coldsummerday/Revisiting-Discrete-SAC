@@ -59,7 +59,8 @@ class DiscreteSACDevPolicy(SACPolicy):
             use_entropy_penalty: bool = False,
             entropy_penalty_beta:float = 0.5,
 
-
+            clip_alpha: bool = False,
+            min_alpha: float = 0.005,
             **kwargs: Any,
     ) -> None:
         super().__init__(
@@ -90,7 +91,8 @@ class DiscreteSACDevPolicy(SACPolicy):
 
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-
+        self.min_log_alpha = np.log(min_alpha)
+        self.clip_alpha = clip_alpha
 
 
     def forward(  # type: ignore
@@ -230,9 +232,12 @@ class DiscreteSACDevPolicy(SACPolicy):
         if self._is_auto_alpha:
             log_prob = -entropy.detach() + self._target_entropy
             alpha_loss = -(self._log_alpha * log_prob).mean()
+
             self._alpha_optim.zero_grad()
             alpha_loss.backward()
             self._alpha_optim.step()
+            if self.clip_alpha and self._log_alpha.item() < self.min_log_alpha.item():
+                self._log_alpha.data.copy_(self.min_log_alpha)
             self._alpha = self._log_alpha.detach().exp()
 
         self.sync_weight()

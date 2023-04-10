@@ -109,6 +109,8 @@ def get_args():
     
     parser.add_argument('--target-entropy-ratio', default=0.98, type=float)
     parser.add_argument("--regularized-softmax", action="store_true", default=False)
+    parser.add_argument("--clip-alpha", action="store_true", default=False)
+    parser.add_argument('--min-alpha', default=0.001, type=float)
 
     parser.add_argument('--entropy-penalty-beta',type=float,default=0.5)
 
@@ -190,6 +192,8 @@ def test_discrete_sac(args=get_args()):
         use_entropy_penalty=args.entropy_penalty,
         entropy_penalty_beta=args.entropy_penalty_beta,
 
+        clip_alpha=args.clip_alpha,
+        min_alpha=args.min_alpha,
     ).to(args.device)
     if args.icm_lr_scale > 0:
         feature_net = DQN(
