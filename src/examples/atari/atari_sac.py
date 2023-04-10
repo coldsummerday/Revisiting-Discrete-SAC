@@ -105,6 +105,9 @@ def get_args():
     parser.add_argument('--clip-q', action="store_true", default=False)
     parser.add_argument("--clip-q-epsilon", type=float, default=0.5)
     parser.add_argument("--entropy-penalty", action="store_true", default=False)
+    
+    
+    parser.add_argument('--target-entropy-ratio', default=0.98, type=float)
     parser.add_argument("--regularized-softmax", action="store_true", default=False)
 
     parser.add_argument('--entropy-penalty-beta',type=float,default=0.5)
@@ -161,7 +164,7 @@ def test_discrete_sac(args=get_args()):
 
     # define policy
     if args.auto_alpha:
-        target_entropy = 0.98 * np.log(np.prod(args.action_shape))
+        target_entropy = args.target_entropy_ratio * np.log(np.prod(args.action_shape))
         log_alpha = torch.zeros(1, requires_grad=True, device=args.device)
         alpha_optim = torch.optim.Adam([log_alpha], lr=args.alpha_lr)
         args.alpha = (target_entropy, log_alpha, alpha_optim)
