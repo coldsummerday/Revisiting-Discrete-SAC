@@ -34,6 +34,7 @@ for SEED in "${SEEDS[@]}"; do
 
         if [[ ("$ALG" = "all") || ("$ALG" = "sac") ]]
         then
+			echo "Train SAC on $ENV"
             python -m examples.atari.atari_sac --task $ENV  \
 			--total-timesteps $TIMESTEP --seed $SEED --batch-size $BATCH_SIZE \
 			--logdir results --target-entropy-ratio $TARGET_ENTROPY \
@@ -43,6 +44,7 @@ for SEED in "${SEEDS[@]}"; do
 
         if [[ ("$ALG" = "all") || ("$ALG" = "sacreg") ]]
         then
+			echo "Train regularized SAC on $ENV"
             python -m examples.atari.atari_sac --task $ENV  \
 			--total-timesteps $TIMESTEP --seed $SEED --batch-size $BATCH_SIZE \
 			--logdir results --target-entropy-ratio $TARGET_ENTROPY \
@@ -53,6 +55,7 @@ for SEED in "${SEEDS[@]}"; do
 		
 		if [[ ("$ALG" = "all") || ("$ALG" = "alpha_sac") ]]
         then
+			echo "Train Clipping alpha SAC on $ENV"
             python -m examples.atari.atari_sac --task $ENV  \
 			--total-timesteps $TIMESTEP --seed $SEED --batch-size $BATCH_SIZE \
 			--logdir results --target-entropy-ratio $TARGET_ENTROPY \
@@ -63,6 +66,7 @@ for SEED in "${SEEDS[@]}"; do
 
 		if [[ ("$ALG" = "all") || ("$ALG" = "revisit_sac") ]]
         then
+			echo "Train revisit SAC on $ENV"
             python -m examples.atari.atari_sac --task $ENV  \
 			--total-timesteps $TIMESTEP --seed $SEED --batch-size $BATCH_SIZE \
 			--logdir results --target-entropy-ratio $TARGET_ENTROPY \
