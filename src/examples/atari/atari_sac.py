@@ -38,12 +38,13 @@ def get_args():
     parser.add_argument("--actor-lr", type=float, default=1e-5)
     parser.add_argument("--critic-lr", type=float, default=1e-5)
     parser.add_argument("--gamma", type=float, default=0.99)
-    parser.add_argument("--n-step", type=int, default=3)
+    parser.add_argument("--n-step", type=int, default=1)
     parser.add_argument("--tau", type=float, default=0.005)
     parser.add_argument("--alpha", type=float, default=0.05)
     parser.add_argument("--auto-alpha", action="store_true", default=False)
     parser.add_argument("--alpha-lr", type=float, default=3e-4)
-    parser.add_argument("--epoch", type=int, default=200)
+    parser.add_argument("--epoch", type=int, default=20)
+    parser.add_argument("--total-timesteps", default=-1, type=int)
     parser.add_argument("--step-per-epoch", type=int, default=50000)
     parser.add_argument("--step-per-collect", type=int, default=10)
     parser.add_argument("--update-per-step", type=float, default=0.1)
@@ -110,16 +111,18 @@ def get_args():
     parser.add_argument('--target-entropy-ratio', default=0.98, type=float)
     parser.add_argument("--regularized-softmax", action="store_true", default=False)
     parser.add_argument("--clip-alpha", action="store_true", default=False)
-    parser.add_argument('--min-alpha', default=0.001, type=float)
+    parser.add_argument('--min-alpha', default=0.01, type=float)
 
     parser.add_argument('--entropy-penalty-beta',type=float,default=0.5)
-
 
 
     return parser.parse_args()
 
 
 def test_discrete_sac(args=get_args()):
+    if args.total_timesteps > 0:
+        args.epoch = (args.total_timesteps // args.step_per_epoch) 
+
     env, train_envs, test_envs = make_atari_env(
         args.task,
         args.seed,
