@@ -34,7 +34,7 @@ for SEED in "${SEEDS[@]}"; do
 
         if [[ ("$ALG" = "all") || ("$ALG" = "sac") ]]
         then
-            python -m examples.atari.atari_sac --task $ENV  \
+            python -m src.examples.atari.atari_sac --task $ENV  \
 			--total-timesteps $TIMESTEP --seed $SEED --batch-size $BATCH_SIZE \
 			--logdir results --target-entropy-ratio $TARGET_ENTROPY \
 			--hidden-size $HIDDEN_DIM --auto-alpha --alpha-lr $LEARNING_RATE \
@@ -43,7 +43,7 @@ for SEED in "${SEEDS[@]}"; do
 
         if [[ ("$ALG" = "all") || ("$ALG" = "sacreg") ]]
         then
-            python -m examples.atari.atari_sac --task $ENV  \
+            python -m src.examples.atari.atari_sac --task $ENV  \
 			--total-timesteps $TIMESTEP --seed $SEED --batch-size $BATCH_SIZE \
 			--logdir results --target-entropy-ratio $TARGET_ENTROPY \
 			--hidden-size $HIDDEN_DIM --auto-alpha --alpha-lr $LEARNING_RATE \
@@ -53,7 +53,7 @@ for SEED in "${SEEDS[@]}"; do
 		
 		if [[ ("$ALG" = "all") || ("$ALG" = "alpha_sac") ]]
         then
-            python -m examples.atari.atari_sac --task $ENV  \
+            python -m src.examples.atari.atari_sac --task $ENV  \
 			--total-timesteps $TIMESTEP --seed $SEED --batch-size $BATCH_SIZE \
 			--logdir results --target-entropy-ratio $TARGET_ENTROPY \
 			--hidden-size $HIDDEN_DIM --auto-alpha --alpha-lr $LEARNING_RATE \
@@ -63,7 +63,7 @@ for SEED in "${SEEDS[@]}"; do
 
 		if [[ ("$ALG" = "all") || ("$ALG" = "revisit_sac") ]]
         then
-            python -m examples.atari.atari_sac --task $ENV  \
+            python -m src.examples.atari.atari_sac --task $ENV  \
 			--total-timesteps $TIMESTEP --seed $SEED --batch-size $BATCH_SIZE \
 			--logdir results --target-entropy-ratio $TARGET_ENTROPY \
 			--hidden-size $HIDDEN_DIM --auto-alpha --alpha-lr $LEARNING_RATE \
